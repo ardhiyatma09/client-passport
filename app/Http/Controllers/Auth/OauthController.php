@@ -22,7 +22,7 @@ class OauthController extends Controller
             'client_id' => '3',
             'redirect_uri' => 'http://127.0.0.1:8000/auth/passport/callback',
             'response_type' => 'code',
-            'scope' => ''
+            'scope' => 'view-tweet post-tweet'
         ]);
 
         return redirect('http://passport.local/oauth/authorize?'. $query);
