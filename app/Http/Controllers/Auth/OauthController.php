@@ -41,10 +41,13 @@ class OauthController extends Controller
         ]);
         $response = json_decode($response->getBody());
 
-        $request->user()->token()->delete();
 
+        $request->user()->token()->delete();
+        // dd($response);
         $request->user()->token()->create([
-            'access_token' => $response->access_token
+            'access_token' => $response->access_token,
+            'expired_in' => $response->expires_in,
+            'refresh_token' => $response->refresh_token
         ]);
 
         return redirect()->route('home');
