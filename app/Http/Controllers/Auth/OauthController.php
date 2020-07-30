@@ -52,4 +52,27 @@ class OauthController extends Controller
 
         return redirect()->route('home');
     }
+
+    public function refresh(Request $request)
+    {
+        $response = $this->client->post('http://passport.local/oauth/token', [
+            'form_params' => [
+                'grant_type' => 'refresh_token',
+                'refresh_token' => $request->user()->token->refresh_token,
+                'client_id' => '3',
+                'client_secret' => '9ae0ynEkgYZ9gVXwWwA8sxpRC67UlumKYupgnVEh',
+                'scope' => 'view-tweet post-tweet'
+            ]
+        ]);
+
+        $response = json_decode($response->getBody());
+
+        $request->user()->token->update([
+            'access_token' => $response->access_token,
+            'expired_in' => $response->expires_in,
+            'refresh_token' => $response->refresh_token
+        ]);
+
+        return redirect()->back();
+    }
 }
